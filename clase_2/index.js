@@ -8,7 +8,6 @@ class TiquetManager {
   getEventos = () => {
     return this.eventos;
   };
-
   agregarEvento = (
     nombre,
     lugar,
@@ -28,7 +27,6 @@ class TiquetManager {
     evento.id = this.eventos.length + 1;
     this.eventos.push(evento);
   };
-
   agregarUsuario = (idEvento, idUsuario) => {
     const eventoIndex = this.eventos.findIndex((e) => e.id == idEvento);
     if (eventoIndex == -1) {
@@ -70,5 +68,6 @@ const manejadorDeEventos = new TiquetManager();
 manejadorDeEventos.agregarEvento("Evento joel", "Argentina", 5000, 100);
 manejadorDeEventos.agregarUsuario(1, 2);
 manejadorDeEventos.agregarUsuario(1, 3);
+manejadorDeEventos.agregarUsuario(1, 5);
 manejadorDeEventos.ponerEventoEnGira(1, "Mexico", "23/07/2023");
 console.log(manejadorDeEventos.getEventos());
