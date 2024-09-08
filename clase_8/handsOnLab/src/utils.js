@@ -5,3 +5,4 @@ const __fileName = fileURLToPath(import.meta.url);
 const __dirname = dirname(__fileName);
 
 export default __dirname;
+//todo esto podria ir en el app.js, preguntale al chat gpt
