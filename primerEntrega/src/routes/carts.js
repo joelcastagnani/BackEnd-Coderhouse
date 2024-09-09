@@ -45,7 +45,7 @@ router.post("/", async (req, res) => {
 
   carts.push(newCart);
   await saveCartsToFile(carts); //Guarda los carritos de "carts" en el archivo
-  res.status(201).json(newCart); //si todo salio OK retorna el nuevo carrito
+  res.status(201).json({ status: "success", newCart }); //si todo salio OK retorna el nuevo carrito
 });
 router.get("/:cid", async (req, res) => {
   const { cid } = req.params;

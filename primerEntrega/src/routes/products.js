@@ -1,10 +1,33 @@
 import { Router } from "express";
+import fs from "fs/promises";
 
 const router = Router();
-let products = [];
+let PRODUCTS_FILE = "./src/files/products.json";
 
-router.get("/", (req, res) => {
+const readProductsFromFile = async () => {
+  try {
+    const data = await fs.readFile(PRODUCTS_FILE, "utf-8");
+    return JSON.parse(data);
+  } catch (error) {
+    return [];
+  }
+};
+const saveProductsToFile = async (products) => {
+  try {
+    await fs.writeFile(
+      PRODUCTS_FILE,
+      JSON.stringify(products, null, 2),
+      "utf-8"
+    );
+  } catch (error) {
+    console.error("error al guardar los productos", error);
+  }
+};
+
+router.get("/", async (req, res) => {
   let { limit } = req.query;
+  const products = await readProductsFromFile();
+
   if (limit) {
     limit = parseInt(limit, 10);
     res.json(products.slice(0, limit));
@@ -12,8 +35,9 @@ router.get("/", (req, res) => {
     res.json(products);
   }
 });
-router.get("/:pid", (req, res) => {
+router.get("/:pid", async (req, res) => {
   const productID = req.params.pid;
+  const products = await readProductsFromFile();
 
   let product = products.find((p) => p.id == productID); //Despues tenes que asegurarte que los productos tengan un campo que sea ID
 
@@ -28,7 +52,7 @@ router.get("/:pid", (req, res) => {
 
   res.send({ product });
 });
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   const {
     title,
     description,
@@ -45,6 +69,8 @@ router.post("/", (req, res) => {
       .json({ error: "Todos los campos son obligatorios, excepto thumbnails" });
   }
 
+  const products = await readProductsFromFile();
+
   const newProduct = {
     id: Number(products.length + 1),
     title,
@@ -57,13 +83,14 @@ router.post("/", (req, res) => {
   };
 
   products.push(newProduct);
-
+  await saveProductsToFile(products);
   res.status(201).json({ status: "success", product: newProduct });
 });
-router.put("/:pid", (req, res) => {
+router.put("/:pid", async (req, res) => {
   const { pid } = req.params;
   const updateProduct = req.body;
 
+  const products = await readProductsFromFile();
   const index = products.findIndex((p) => p.id == pid);
 
   if (index === -1) {
@@ -77,7 +104,7 @@ router.put("/:pid", (req, res) => {
     !updateProduct.description ||
     !updateProduct.price ||
     !updateProduct.stock ||
-    !updateProduct.status
+    updateProduct.status === undefined
   ) {
     return res.status(422).json({
       error: {
@@ -87,26 +114,35 @@ router.put("/:pid", (req, res) => {
     });
   }
 
-  products[index] = updateProduct;
+  products[index] = { ...products[index], ...updateProduct };
+
+  await saveProductsToFile(products);
 
   res.status(200).json({
     message: "Producto actualizado correctamente",
     product: products[index],
   });
 });
-router.delete("/:pid", (req, res) => {
+router.delete("/:pid", async (req, res) => {
   const { pid } = req.params;
-  let currentLength = products.length;
+  const products = await readProductsFromFile();
+  const currentLength = products.length;
 
-  products = products.filter((p) => pid != p.id);
+  const updatedProducts = products.filter((p) => p.id != pid);
 
-  if (products.length == currentLength) {
+  if (updatedProducts.length == currentLength) {
     return res
       .status(404)
-      .send({ status: "error", error: "Porducto no eliminado" });
+      .send({ status: "error", error: "Porducto no encontrado" });
   }
 
-  res.send({ status: "success", message: products });
+  await saveProductsToFile(updatedProducts);
+
+  res.status(200).json({
+    status: "success",
+    message: `Producto con ID ${pid} eliminado correctamente`,
+    products: updatedProducts,
+  });
 });
 
 export default router;
