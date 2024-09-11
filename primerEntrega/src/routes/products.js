@@ -77,7 +77,7 @@ router.post("/", async (req, res) => {
     description,
     code,
     price: Number(price),
-    status: Boolean(status),
+    status: status === "true", // convierte el string "true" o "false" a booleano
     stock: Number(stock),
     category,
   };
