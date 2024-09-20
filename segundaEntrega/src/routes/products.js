@@ -1,5 +1,6 @@
 import { Router } from "express";
 import fs from "fs/promises";
+import { io } from "../app.js";
 
 const router = Router();
 let PRODUCTS_FILE = "./src/files/products.json";
@@ -12,7 +13,7 @@ export const readProductsFromFile = async () => {
     return [];
   }
 };
-const saveProductsToFile = async (products) => {
+export const saveProductsToFile = async (products) => {
   try {
     await fs.writeFile(
       PRODUCTS_FILE,
@@ -84,6 +85,9 @@ router.post("/", async (req, res) => {
 
   products.push(newProduct);
   await saveProductsToFile(products);
+
+  io.emit("updateProducts", products);
+
   res.status(201).json({ status: "success", product: newProduct });
 });
 router.put("/:pid", async (req, res) => {
