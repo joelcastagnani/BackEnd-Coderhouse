@@ -28,5 +28,12 @@ if (form) {
     };
 
     socket.emit("addProduct", newProduct);
+
+    document.getElementById("title").value = "";
+    document.getElementById("description").value = "";
+    document.getElementById("code").value = "";
+    document.getElementById("price").value = "";
+    document.getElementById("stock").value = "";
+    document.getElementById("category").value = "";
   });
 }
