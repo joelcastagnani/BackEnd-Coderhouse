@@ -1,0 +1,50 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tienda Online</title>
+    <link rel="stylesheet" href="/static/css/home.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Tienda Online</h1>
+      <nav>
+        <a href="/carts">Ver Carrito</a>
+      </nav>
+    </header>
+
+    <main>
+      <h1>Agregar un producto: </h1>
+      <form id="productForm">
+        <input type="text" id="title" placeholder="Título" required />
+        <input
+          type="text"
+          id="description"
+          placeholder="Descripción"
+          required
+        />
+        <input type="text" id="code" placeholder="Código" required />
+        <input type="number" id="price" placeholder="Precio" required />
+        <input type="number" id="stock" placeholder="Stock" required />
+        <input type="text" id="category" placeholder="Categoría" required />
+        <input type="file" id="photo" accept="image/*" required />
+        <button type="submit">Agregar Producto</button>
+      </form>
+
+      <h2>Productos</h2>
+      <ul class="product-list" id="products-list">
+        {{#each products}}
+          <li class="product">
+            <img src="{{this.photo}}" />
+            <h3>{{this.title}}</h3>
+            <p>Precio: ${{this.price}}</p>
+            <button onclick="">Agregar al Carrito</button>
+          </li>
+        {{/each}}
+      </ul>
+    </main>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/static/js/index.js"></script>
+  </body>
+</html>

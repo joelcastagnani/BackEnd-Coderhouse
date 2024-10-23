@@ -5,10 +5,13 @@ import mongoose from "mongoose";
 import handlebars from "handlebars";
 import { engine } from "express-handlebars";
 import path from "path";
+import { Server } from "socket.io";
 
 import productsRouter from "./routes/products.js";
 import cartsRouter from "./routes/carts.js";
 import viewsRouter from "./routes/views.js";
+import { Console, log } from "console";
+import { productsModel } from "./models/products.js";
 
 const app = express();
 const port = 8080;
@@ -33,4 +36,25 @@ app.use("/", viewsRouter);
 
 const server = app.listen(port, () => {
   console.log(`Servidor de la entrega final ON en puerto ${port}`);
+});
+
+const io = new Server(server);
+
+io.on("connection", async (socket) => {
+  console.log("Nuevo cliente conectado");
+
+  const products = await productsModel.find();
+  socket.emit("updateProducts", products);
+
+  socket.on("addProduct", async (product) => {
+    const newProduct = new productsModel({
+      ...product,
+      status: true,
+    });
+
+    await newProduct.save();
+
+    const updatedProducts = await productsModel.find();
+    io.emit("updatedProducts", updatedProducts);
+  });
 });

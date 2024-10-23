@@ -7,6 +7,11 @@ const router = Router();
 const productsManager = new Products();
 const cartsManager = new Carts();
 
+router.get("/", async (req, res) => {
+  const products = await productsManager.getAll(); // Obtener todos los productos
+  res.render("home", { products }); // Renderizar la vista del home
+});
+
 router.get("/products", async (req, res) => {
   const products = await productsManager.getAll();
   res.render("products", { products });

@@ -1,16 +1,18 @@
 <h1>Lista de productos: </h1>
 
 {{#each products}}
-  <p>{{this.id}}</p>
-  <p>{{this.title}}</p>
-  <p>{{this.description}}</p>
-  <p>{{this.code}}</p>
-  <p>{{this.price}}</p>
-  <p>{{this.status}}</p>
-  <p>{{this.stock}}</p>
-  <p>{{this.category}}</p>
+  <div class="productContainer">
+    <p>{{this.id}}</p>
+    <p>{{this.title}}</p>
+    <p>{{this.description}}</p>
+    <p>{{this.code}}</p>
+    <p>{{this.price}}</p>
+    <p>{{this.status}}</p>
+    <p>{{this.stock}}</p>
+    <p>{{this.category}}</p>
 
-  {{#if this.photo}}
-    <img src="{{this.photo}}" />
-  {{/if}}
+    {{#if this.photo}}
+      <img src="{{this.photo}}" />
+    {{/if}}
+  </div>
 {{/each}}
