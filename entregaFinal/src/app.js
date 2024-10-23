@@ -1,11 +1,13 @@
 //node --watch .\src\app.js
 import express from "express";
 import __dirname from "./utils.js";
+import mongoose from "mongoose";
 import handlebars from "handlebars";
 import { engine } from "express-handlebars";
-import productsRouter from "./routes/products.js";
-import mongoose from "mongoose";
 import path from "path";
+
+import productsRouter from "./routes/products.js";
+import cartsRouter from "./routes/carts.js";
 import viewsRouter from "./routes/views.js";
 
 const app = express();
@@ -26,6 +28,7 @@ app.use("/static", express.static(__dirname + "/public"));
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 
 app.use("/api/products", productsRouter);
+app.use("/api/carts", cartsRouter);
 app.use("/", viewsRouter);
 
 const server = app.listen(port, () => {
