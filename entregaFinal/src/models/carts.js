@@ -16,10 +16,6 @@ const cartItemSchema = mongoose.Schema({
   },
 });
 const cartsSchema = mongoose.Schema({
-  userId: {
-    type: String,
-    required: true,
-  },
   items: [cartItemSchema], //array de productos que contiene el carrito
   totalPrice: Number,
   date: {

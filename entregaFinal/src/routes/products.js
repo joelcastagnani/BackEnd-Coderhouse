@@ -7,7 +7,14 @@ const router = Router();
 const productsManager = new Products();
 
 router.get("/", async (req, res) => {
-  const { limit = 10, page = 1, sort, query } = req.query;
+  const {
+    limit = 10,
+    page = 1,
+    sort,
+    query,
+    category,
+    availability,
+  } = req.query;
 
   const limitNum = parseInt(limit, 10) || 10;
   const pageNum = parseInt(page, 10) || 1;
@@ -20,6 +27,10 @@ router.get("/", async (req, res) => {
       { category: { $regex: query, $options: "i" } }, // Buusqueda por categorqa
       { available: query === "true" }, // Busqueda por disponibilidaddd
     ];
+  }
+
+  if (category) {
+    filter.available = availability === "true"; //lo paso a booleano pero no se si estra bien esto
   }
 
   const options = {

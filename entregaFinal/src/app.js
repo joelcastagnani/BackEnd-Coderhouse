@@ -1,4 +1,3 @@
-//node --watch .\src\app.js
 import express from "express";
 import __dirname from "./utils.js";
 import mongoose from "mongoose";

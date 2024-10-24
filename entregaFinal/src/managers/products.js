@@ -17,4 +17,28 @@ export default class Products {
       throw error;
     }
   };
+
+  paginate = async (filter, options) => {
+    const page = options.page || 1;
+    const limit = options.limit || 10;
+    const skip = (page - 1) * limit;
+
+    const totalDocs = await productsModel.countDocuments(filter);
+    const totalPages = Math.ceil(totalDocs / limit);
+    const docs = await productsModel
+      .find(filter)
+      .skip(skip)
+      .limit(limit)
+      .sort(options.sort);
+
+    return {
+      docs: docs.map((doc) => doc.toObject()),
+      totalPages,
+      page,
+      hasPrevPage: page > 1,
+      hasNextPage: page < totalPages,
+      prevPage: page > 1 ? page - 1 : null,
+      nextPage: page < totalPages ? page + 1 : null,
+    };
+  };
 }

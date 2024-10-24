@@ -16,15 +16,49 @@
         <h2>Productos</h2>
         <ul class="product-list" id="products-list">
           {{#each products}}
-            <li class="product">
+            <li class="oneProduct">
               <img src="{{this.photo}}" />
-              <h3>{{this.title}}</h3>
               <p>Precio: ${{this.price}}</p>
               <button id="addProductToCartButton">Agregar al Carrito</button>
             </li>
           {{/each}}
         </ul>
       </div>
+
+      <h1>Búsqueda de Productos</h1>
+      <form id="searchForm" action="/api/products" method="GET">
+        <label for="query">Buscar:</label>
+        <input
+          type="text"
+          id="query"
+          name="query"
+          placeholder="Buscar por titulo, descrip, o categ"
+        />
+
+        <label for="category">Categoria:</label>
+        <select id="category" name="category">
+          <option value="">Seleccione una categoría</option>
+          <option value="electronics">Electrónica</option>
+          <option value="clothing">Ropa</option>
+          <option value="home">Hogar</option>
+        </select>
+
+        <label for="availability">Disponibilidad:</label>
+        <select id="availability" name="availability">
+          <option value="">Seleccione disponibilidad</option>
+          <option value="true">En stock</option>
+          <option value="false">Agotado</option>
+        </select>
+
+        <label for="sort">Ordenar por precio:</label>
+        <select id="sort" name="sort">
+          <option value="asc">Ascendente</option>
+          <option value="desc">Descendente</option>
+        </select>
+
+        <button type="submit">Buscar</button>
+      </form>
+
       <div class="formContainer">
         <h2>Agregar un producto a la lista: </h2>
         <form id="productForm">
@@ -47,18 +81,22 @@
         <h2>Carritos Disponibles:</h2>
         <ul>
           {{#each carts}}
-            <li>
-              Carrito ID:
-              {{this._id}}
-              <ul>
-                {{#each this.items}}
-                  <li>{{this.title}} (Cantidad: {{this.quantity}})</li>
-                {{/each}}
-              </ul>
-            </li>
+            <div class="oneCart">
+              <li>
+                Carrito ID:{{this._id}}
+                <ul>
+                  {{#each this.items}}
+                    <li>{{this.0.productId}}</li>
+                    <li>(Cantidad: {{this.quantity}})</li>
+                    <li>{{this.totalPrice}}</li>
+                  {{/each}}
+                </ul>
+              </li>
+            </div>
           {{/each}}
         </ul>
       </div>
+
     </main>
 
     <script src="/socket.io/socket.io.js"></script>

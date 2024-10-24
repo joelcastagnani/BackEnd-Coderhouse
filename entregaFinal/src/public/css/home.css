@@ -25,21 +25,10 @@ header {
   justify-content: center;
   padding: 20px;
 }
-.product {
-  border: 10px solid black;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  margin: 10px;
-  padding: 15px;
-  width: 200px;
-  text-align: center;
-}
 form {
   border: 1px solid black;
   display: flex;
   flex-direction: column;
-  width: 40%;
 }
 .formContainer {
   border: 2px solid black;
@@ -47,6 +36,7 @@ form {
 .productsContainer {
   border: 2px solid black;
 }
-.cartsContainer {
-  border: 2px solid black;
+li{
+  border: 1px solid black;
+  list-style-type: none;
 }

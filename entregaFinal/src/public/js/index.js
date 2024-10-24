@@ -16,7 +16,6 @@ const renderProducts = (products) => {
     });
   }
 };
-
 const addToCart = async (productId) => {
   try {
     const response = await fetch(`/api/carts/${productId}`, {
@@ -33,7 +32,6 @@ const addToCart = async (productId) => {
 socket.on("updateProducts", (products) => {
   renderProducts(products);
 });
-
 socket.on("updatedProducts", (products) => {
   renderProducts(products);
 });
