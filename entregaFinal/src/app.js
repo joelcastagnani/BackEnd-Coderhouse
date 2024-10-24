@@ -39,11 +39,8 @@ const server = app.listen(port, () => {
 const io = new Server(server);
 
 io.on("connection", async (socket) => {
-  console.log("Nuevo cliente conectado");
-
   const products = await productsModel.find();
   socket.emit("updateProducts", products);
-
   socket.on("addProduct", async (product) => {
     const newProduct = new productsModel({
       ...product,
@@ -54,5 +51,18 @@ io.on("connection", async (socket) => {
 
     const updatedProducts = await productsModel.find();
     io.emit("updatedProducts", updatedProducts);
+  });
+
+  const carts = await cartsModel.find();
+  socket.emit("updateCarts", carts)
+  socket.on("addCart", async (cart) => {
+    const newCart = new cartsModel({
+      ...cart
+    });
+
+    await newCart.save();
+
+    const updatedCarts = await cartsModel.find();
+    io.emit("updatedCarts", updatedCarts);
   });
 });

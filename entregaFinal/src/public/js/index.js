@@ -7,8 +7,9 @@ const renderProducts = (products) => {
     products.forEach((product) => {
       const li = document.createElement("li");
       li.innerHTML = `
-                <img src="${product.photo}" />
-                <h3>${product.title}</h3>
+                <img src=${product.photo} />
+                <h4>${product.title}</h4>
+                <p>${product.description}</p>
                 <p>Precio: $${product.price}</p>
                 <button onclick="addToCart('${product._id}')">Agregar al Carrito</button>
             `;
@@ -16,6 +17,22 @@ const renderProducts = (products) => {
     });
   }
 };
+const renderCarts = (carts) => {
+  const cartsList = document.getElementById("carts-list");
+  if (cartsList) {
+    cartsList.innerHTML = "";
+    carts.forEach((cart) => {
+      const li = document.createElement("li");
+      li.className = "cart-item";
+      li.innerHTML = `
+                <p>ID:${cart._id}</p>
+                <p>fecha${cart.date}</p>
+            `;
+      cartsList.appendChild(li);
+    });
+  }
+};
+
 const addToCart = async (productId) => {
   try {
     const response = await fetch(`/api/carts/${productId}`, {
@@ -34,6 +51,13 @@ socket.on("updateProducts", (products) => {
 });
 socket.on("updatedProducts", (products) => {
   renderProducts(products);
+});
+
+socket.on("updateCarts", (carts) => {
+  renderCarts(carts);
+});
+socket.on("updatedCarts", (carts) => {
+  renderCarts(carts);
 });
 
 const form = document.getElementById("productForm");
