@@ -26,12 +26,50 @@ export default class Carts {
       cart.items.push({
         productId: product._id,
         title: product.title,
-        quantity: 1, // Suponiendo que queremos agregar una unidad
+        quantity: 1,
       });
 
       await cartsModel.updateOne({ _id: idCart }, { items: cart.items });
     } catch (error) {
       throw error;
+    }
+  };
+  removeProductFromCart = async (cid, pid) => {
+    try {
+      const cart = await cartsModel.findOne({ _id: cid });
+
+      if (!cart) throw new Error("Carrito no encontrado");
+
+      const productIndex = cart.items.findIndex(
+        (item) => item.productId.toString() === pid
+      );
+
+      if (productIndex === -1)
+        throw new Error("Producto no encontrado en el carrito");
+
+      cart.items.splice(productIndex, 1);
+
+      await cartsModel.updateOne({ _id: cid }, { items: cart.items });
+
+      return cart;
+    } catch (error) {
+      throw error;
+    }
+  };
+  updateCart = async (cid, newItems) => {
+    try {
+      const cart = await cartsModel.findOne({ _id: cid });
+
+      if (!cart) throw new Error("Carrito no encontrado");
+
+      cart.items = newItems;
+
+      await cartsModel.updateOne({ _id: cid }, { items: cart.items });
+
+      return cart;
+    } catch (error) {
+      console.error("Error en updateCart:", error);
+      throw new Error(error.message); 
     }
   };
 }

@@ -1,5 +1,14 @@
 const socket = io();
 
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Los meses son 0-indexados
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+};
+
+
 const renderProducts = (products) => {
   const productsList = document.getElementById("products-list");
   if (productsList) {
@@ -26,7 +35,19 @@ const renderCarts = (carts) => {
       li.className = "cart-item";
       li.innerHTML = `
                 <p>ID:${cart._id}</p>
-                <p>fecha${cart.date}</p>
+                <p>fecha: ${formatDate(cart.date)}</p>
+                <ul class="cartProducts">
+                  ${cart.items
+                    .map(
+                      (item) => `
+                    <li>
+                      Producto id: ${item.productId} - Cantidad: ${item.quantity}
+                    </li>
+                `
+                    )
+                    .join("")}
+                </ul>
+                
             `;
       cartsList.appendChild(li);
     });

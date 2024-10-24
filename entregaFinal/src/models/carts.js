@@ -16,7 +16,7 @@ const cartItemSchema = mongoose.Schema({
   },
 });
 const cartsSchema = mongoose.Schema({
-  items: [cartItemSchema], //array de productos que contiene el carrito
+  items: [cartItemSchema],
   totalPrice: Number,
   date: {
     type: Date,
