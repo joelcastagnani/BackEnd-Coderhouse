@@ -39,11 +39,12 @@
             <img src="{{this.photo}}" />
             <h3>{{this.title}}</h3>
             <p>Precio: ${{this.price}}</p>
-            <button onclick="">Agregar al Carrito</button>
+            <button id="addProductToCartButton">Agregar al Carrito</button>
           </li>
         {{/each}}
       </ul>
     </main>
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="/static/js/index.js"></script>
   </body>

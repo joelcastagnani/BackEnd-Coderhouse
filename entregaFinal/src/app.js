@@ -2,7 +2,6 @@
 import express from "express";
 import __dirname from "./utils.js";
 import mongoose from "mongoose";
-import handlebars from "handlebars";
 import { engine } from "express-handlebars";
 import path from "path";
 import { Server } from "socket.io";
@@ -10,14 +9,14 @@ import { Server } from "socket.io";
 import productsRouter from "./routes/products.js";
 import cartsRouter from "./routes/carts.js";
 import viewsRouter from "./routes/views.js";
-import { Console, log } from "console";
 import { productsModel } from "./models/products.js";
+import { cartsModel } from "./models/carts.js";
 
 const app = express();
 const port = 8080;
 
 const connection = mongoose.connect(
-  "mongodb+srv://jcastagnani:backend123@backend-coderhouse.5lryv.mongodb.net/entregaFinal"
+  "mongodb+srv://jcastagnani:backend123@backend-coderhouse.5lryv.mongodb.net/entregaFinal" //esto podria llegar a tener que cambiar
 );
 
 app.engine("handlebars", engine());
