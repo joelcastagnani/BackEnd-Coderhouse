@@ -8,7 +8,6 @@ export default class Carts {
     const carts = await cartsModel.find();
     return carts.map((cart) => cart.toObject());
   };
-
   saveCarts = async (cart) => {
     try {
       const result = await cartsModel.create(cart);
@@ -22,13 +21,15 @@ export default class Carts {
       const product = await productsModel.findOne({ _id: idProduct });
       const cart = await cartsModel.findOne({ _id: idCart });
 
+      if (!cart) throw new Error("Carrito no encontrado");
+
       cart.items.push({
+        productId: product._id,
         title: product.title,
-        productId: product.productId,
-        quantity: product.quantity,
+        quantity: 1, // Suponiendo que queremos agregar una unidad
       });
 
-      await cartsModel.updateOne({ _id: idCart }, cart);
+      await cartsModel.updateOne({ _id: idCart }, { items: cart.items });
     } catch (error) {
       throw error;
     }

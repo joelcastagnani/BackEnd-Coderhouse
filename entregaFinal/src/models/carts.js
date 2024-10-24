@@ -15,7 +15,6 @@ const cartItemSchema = mongoose.Schema({
     min: 1,
   },
 });
-
 const cartsSchema = mongoose.Schema({
   userId: {
     type: String,

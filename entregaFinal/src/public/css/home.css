@@ -3,37 +3,28 @@
   margin: 0;
   box-sizing: border-box;
 }
+
 img {
   width: 60px;
 }
-
 body {
   font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f4f4f4;
 }
-
+main {
+  display: flex;
+}
 header {
   background-color: #35424a;
   color: white;
   padding: 1rem;
   text-align: center;
 }
-
-nav a {
-  color: white;
-  margin: 0 10px;
-  text-decoration: none;
-}
-
 .product-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   padding: 20px;
 }
-
 .product {
   border: 10px solid black;
   background: white;
@@ -44,20 +35,18 @@ nav a {
   width: 200px;
   text-align: center;
 }
-
-footer {
-  text-align: center;
-  padding: 1rem;
-  background-color: #35424a;
-  color: white;
-  position: relative;
-  bottom: 0;
-  width: 100%;
-}
-
 form {
   border: 1px solid black;
   display: flex;
   flex-direction: column;
   width: 40%;
+}
+.formContainer {
+  border: 2px solid black;
+}
+.productsContainer {
+  border: 2px solid black;
+}
+.cartsContainer {
+  border: 2px solid black;
 }

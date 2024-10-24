@@ -8,41 +8,57 @@
 
   <body>
     <header>
-      <h1>Tienda Online</h1>
-      <nav>
-        <a href="/carts">Ver Carrito</a>
-      </nav>
+      <h1>Tienda Online - Entrega final Backend 1 - Coderhouse</h1>
     </header>
 
     <main>
-      <h1>Agregar un producto: </h1>
-      <form id="productForm">
-        <input type="text" id="title" placeholder="Título" required />
-        <input
-          type="text"
-          id="description"
-          placeholder="Descripción"
-          required
-        />
-        <input type="text" id="code" placeholder="Código" required />
-        <input type="number" id="price" placeholder="Precio" required />
-        <input type="number" id="stock" placeholder="Stock" required />
-        <input type="text" id="category" placeholder="Categoría" required />
-        <input type="file" id="photo" accept="image/*" required />
-        <button type="submit">Agregar Producto</button>
-      </form>
-
-      <h2>Productos</h2>
-      <ul class="product-list" id="products-list">
-        {{#each products}}
-          <li class="product">
-            <img src="{{this.photo}}" />
-            <h3>{{this.title}}</h3>
-            <p>Precio: ${{this.price}}</p>
-            <button id="addProductToCartButton">Agregar al Carrito</button>
-          </li>
-        {{/each}}
-      </ul>
+      <div class="productsContainer">
+        <h2>Productos</h2>
+        <ul class="product-list" id="products-list">
+          {{#each products}}
+            <li class="product">
+              <img src="{{this.photo}}" />
+              <h3>{{this.title}}</h3>
+              <p>Precio: ${{this.price}}</p>
+              <button id="addProductToCartButton">Agregar al Carrito</button>
+            </li>
+          {{/each}}
+        </ul>
+      </div>
+      <div class="formContainer">
+        <h2>Agregar un producto a la lista: </h2>
+        <form id="productForm">
+          <input type="text" id="title" placeholder="Título" required />
+          <input
+            type="text"
+            id="description"
+            placeholder="Descripción"
+            required
+          />
+          <input type="text" id="code" placeholder="Código" required />
+          <input type="number" id="price" placeholder="Precio" required />
+          <input type="number" id="stock" placeholder="Stock" required />
+          <input type="text" id="category" placeholder="Categoría" required />
+          <input type="file" id="photo" accept="image/*" required />
+          <button type="submit">Agregar Producto</button>
+        </form>
+      </div>
+      <div class="cartsContainer">
+        <h2>Carritos Disponibles:</h2>
+        <ul>
+          {{#each carts}}
+            <li>
+              Carrito ID:
+              {{this._id}}
+              <ul>
+                {{#each this.items}}
+                  <li>{{this.title}} (Cantidad: {{this.quantity}})</li>
+                {{/each}}
+              </ul>
+            </li>
+          {{/each}}
+        </ul>
+      </div>
     </main>
 
     <script src="/socket.io/socket.io.js"></script>

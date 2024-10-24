@@ -14,13 +14,19 @@ router.post("/", async (req, res) => {
     res.send({ status: "success", payload: carts });
   } catch (error) {}
 });
-router.put("/:idProduct/:idCart", async (req, res) => {
+router.put("/:idProduct", async (req, res) => {
   try {
-    const { idProduct, idCart } = req.params;
-    const result = await cartsManager.addProductToCart(idProduct, idCart);
+    const { idProduct } = req.params;
+    const newCart = await cartsManager.saveCarts({
+      userId: "userIdPlaceholder",
+      items: [],
+      totalPrice: 0,
+    });
+
+    await cartsManager.addProductToCart(idProduct, newCart._id); // Usa el nuevo carrito
     res.send({
       status: "success",
-      payload: "Se agrego el producto al carrito correctamente.",
+      payload: "Se creó un nuevo carrito y se agregó el producto.",
     });
   } catch (error) {
     res.status(500).send({ status: "error", error });

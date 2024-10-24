@@ -10,10 +10,23 @@ const renderProducts = (products) => {
                 <img src="${product.photo}" />
                 <h3>${product.title}</h3>
                 <p>Precio: $${product.price}</p>
-                <button onclick="">Agregar al Carrito</button>
+                <button onclick="addToCart('${product._id}')">Agregar al Carrito</button>
             `;
       productsList.appendChild(li);
     });
+  }
+};
+
+const addToCart = async (productId) => {
+  try {
+    const response = await fetch(`/api/carts/${productId}`, {
+      method: "PUT",
+    });
+    const data = await response.json();
+    alert(data.payload); // Muestra un mensaje de éxito
+  } catch (error) {
+    console.error("Error al agregar al carrito:", error);
+    alert("Error al agregar al carrito");
   }
 };
 
