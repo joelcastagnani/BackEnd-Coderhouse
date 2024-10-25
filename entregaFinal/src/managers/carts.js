@@ -5,7 +5,7 @@ export default class Carts {
   constructor() {}
 
   getAll = async () => {
-    const carts = await cartsModel.find();
+    const carts = await cartsModel.find().populate('items.productId');
     return carts.map((cart) => cart.toObject());
   };
   saveCarts = async (cart) => {
@@ -25,7 +25,6 @@ export default class Carts {
 
       cart.items.push({
         productId: product._id,
-        title: product.title,
         quantity: 1,
       });
 
@@ -70,6 +69,43 @@ export default class Carts {
     } catch (error) {
       console.error("Error en updateCart:", error);
       throw new Error(error.message); 
+    }
+  };
+  updateProductQuantity = async (cid, pid, quantity) => {
+    try {
+      const cart = await cartsModel.findOne({ _id: cid });
+      
+      if (!cart) throw new Error("Carrito no encontrado");
+  
+      const productIndex = cart.items.findIndex(
+        (item) => item.productId.toString() === pid
+      );
+  
+      if (productIndex === -1) throw new Error("Producto no encontrado en el carrito");
+  
+      // Actualiza la cantidad del producto
+      cart.items[productIndex].quantity = quantity;
+  
+      // Guarda los cambios en la base de datos
+      await cartsModel.updateOne({ _id: cid }, { items: cart.items });
+  
+      return cart; // Devuelve el carrito actualizado
+    } catch (error) {
+      throw error;
+    }
+  };
+  clearCart = async (cid) => {
+    try {
+      const cart = await cartsModel.findOne({ _id: cid });
+      if (!cart) throw new Error("Carrito no encontrado");
+
+      cart.items = [];
+  
+      await cartsModel.updateOne({ _id: cid }, { items: cart.items });
+  
+      return cart;
+    } catch (error) {
+      throw error;
     }
   };
 }
